@@ -37,7 +37,10 @@ public class List {
      * list.
      */
     public void addFirst(char chr) {
-        // Your code goes here
+        CharData firstC = new CharData(chr);
+        Node firstNode = new Node(firstC, first);
+        first = firstNode;
+        this.size  ++;
     }
 
     /** GIVE Textual representation of this list. */
@@ -74,6 +77,23 @@ public class List {
      * given chr to the beginning of this list.
      */
     public void update(char chr) {
+        int index = indexOf(chr);
+        Node current = first; 
+        if (index == -1)
+        {
+            addFirst(chr);
+        }
+        else
+        {
+            while(current!=null)
+            {
+                if (current.cp.equals(chr))
+                {
+                    current.cp.count++;
+                }
+                current = current.next;
+            }
+        }
 
     }
 
