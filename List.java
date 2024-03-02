@@ -37,23 +37,23 @@ public class List {
      * list.
      */
     public void addFirst(char chr) {
-        CharData firstC = new CharData(chr);
-        Node firstNode = new Node(firstC, first);
-        first = firstNode;
-        this.size  ++;
+        CharData newData = new CharData(chr);
+        Node newNode = new Node(newData, first);
+        first = newNode;
+        size++;
     }
 
     /** GIVE Textual representation of this list. */
     public String toString() {
-        if (first == null)
-            return "()";
-        Node currentNode = first;
+        Node current = first;
         String str = "(";
-        while (currentNode != null) {
-            str += currentNode.cp;
-            currentNode = currentNode.next;
+        while (current != null) {
+            str += current.cp.toString();
+            str += " ";
+            current = current.next;
         }
-        return str.substring(str.length() - 1) + ")";
+
+        return str.substring(0, str.length() - 1) + ")";// Your code goes here
     }
 
     /**
@@ -62,11 +62,12 @@ public class List {
      * or -1 if there is no such object in this list.
      */
     public int indexOf(char chr) {
-        Node currentNode = this.first;
-        for (int n = 0; n < this.size; n++) {
-            if (currentNode.cp.equals(chr))
-                return n;
-            currentNode = currentNode.next;
+        Node current = first;
+        for (int i = 0; current != null; i++) {
+            if (current.cp.chr == chr) {
+                return i;
+            }
+            current = current.next;
         }
         return -1;
     }
@@ -77,24 +78,15 @@ public class List {
      * given chr to the beginning of this list.
      */
     public void update(char chr) {
-        int index = indexOf(chr);
-        Node current = first; 
-        if (index == -1)
-        {
-            addFirst(chr);
-        }
-        else
-        {
-            while(current!=null)
-            {
-                if (current.cp.equals(chr))
-                {
-                    current.cp.count++;
-                }
-                current = current.next;
+        Node current = first;
+        while (current != null) {
+            if (current.cp.chr == chr) {
+                current.cp.count++;
+                return;
             }
+            current = current.next;
         }
-
+        addFirst(chr);
     }
 
     /**
@@ -103,18 +95,18 @@ public class List {
      * true. Otherwise, returns false.
      */
     public boolean remove(char chr) {
-        Node currentNode = first;
-        for (int i = 0; i < size; i++) {
-            if (currentNode.cp.equals(chr)) {
-                for (int j = i; j < size; j++) {
-                    currentNode.cp.chr = currentNode.next.cp.chr;
-                }
-                size--;
+        Node current = first;
+        Node before = current;
+        while (current != null) {
+            if (current.cp.chr == chr) {
+                before.next = current.next;
+                current = null;
                 return true;
             }
-            currentNode = currentNode.next;
+            before = current;
+            current = current.next;
         }
-        return false;
+        return false;// Your code goes here
     }
 
     /**
@@ -123,15 +115,16 @@ public class List {
      * throws an IndexOutOfBoundsException.
      */
     public CharData get(int index) {
-        if (index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bound.");
-        else {
-            Node currentNode = first;
+        Node current = first;
+        if (index >= 0 && index < size) {
             for (int i = 0; i < index; i++) {
-                currentNode = currentNode.next;
+                current = current.next;
             }
-            return currentNode.cp;
+            return current.cp;
+        } else {
+            throw new IndexOutOfBoundsException();
         }
+
     }
 
     /**
